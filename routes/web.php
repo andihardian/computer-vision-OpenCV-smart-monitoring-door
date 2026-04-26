@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\ProfileController;
@@ -20,11 +21,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Devices — semua user login bisa lihat
+    // Devices — semua user login bisa lihat & detail
     Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('devices.show');
 
-    // Devices & Users — hanya admin
+    // Access Logs — semua user login bisa lihat
+    Route::get('/logs', [AccessLogController::class, 'index'])->name('logs.index');
+
+    // Admin only
     Route::middleware('role:admin')->group(function () {
         Route::get('/devices/create', [DeviceController::class, 'create'])->name('devices.create');
         Route::post('/devices', [DeviceController::class, 'store'])->name('devices.store');

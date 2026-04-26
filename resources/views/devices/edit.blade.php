@@ -1,67 +1,67 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Edit Device
-        </h2>
-    </x-slot>
+    <x-slot name="title">Edit Device</x-slot>
 
-    <div class="py-6">
-        <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white rounded-xl shadow p-6">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Edit Device</h1>
+        <a href="{{ route('devices.index') }}" class="btn btn-secondary shadow-sm">
+            <i class="fas fa-arrow-left fa-sm mr-1"></i> Kembali
+        </a>
+    </div>
 
-                @if ($errors->any())
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                        <ul class="list-disc list-inside text-sm">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Edit Informasi Device</h6>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('devices.update', $device) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                <form action="{{ route('devices.update', $device) }}" method="POST" class="space-y-4">
-                    @csrf
-                    @method('PUT')
+                        <div class="form-group">
+                            <label class="font-weight-bold small">Nama Device <span class="text-danger">*</span></label>
+                            <input type="text" name="name" value="{{ old('name', $device->name) }}"
+                                class="form-control @error('name') is-invalid @enderror">
+                            @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Device <span class="text-red-500">*</span></label>
-                        <input type="text" name="name" value="{{ old('name', $device->name) }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
-                    </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold small">Lokasi</label>
+                            <input type="text" name="location" value="{{ old('location', $device->location) }}"
+                                class="form-control @error('location') is-invalid @enderror">
+                            @error('location')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
-                        <input type="text" name="location" value="{{ old('location', $device->location) }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold small">Token (read-only)</label>
+                            <input type="text" value="{{ $device->token }}" class="form-control mono bg-light" readonly>
+                            <small class="text-muted">Gunakan tombol Regenerate Token di halaman detail untuk memperbarui token.</small>
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Token (read-only)</label>
-                        <input type="text" value="{{ $device->token }}"
-                            class="w-full border border-gray-200 bg-gray-50 rounded-lg px-3 py-2 text-sm font-mono text-gray-400"
-                            readonly>
-                        <p class="text-xs text-gray-400 mt-1">Gunakan halaman detail device untuk regenerate token.</p>
-                    </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="is_active"
+                                    name="is_active" value="1" {{ $device->is_active ? 'checked' : '' }}>
+                                <label class="custom-control-label font-weight-bold small" for="is_active">
+                                    Device Aktif
+                                </label>
+                            </div>
+                        </div>
 
-                    <div>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" name="is_active" value="1"
-                                {{ $device->is_active ? 'checked' : '' }}
-                                class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="text-sm font-medium text-gray-700">Device Aktif</span>
-                        </label>
-                    </div>
-
-                    <div class="flex gap-3 pt-2">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm">
-                            Update
-                        </button>
-                        <a href="{{ route('devices.index') }}" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-5 py-2 rounded-lg text-sm">
-                            Batal
-                        </a>
-                    </div>
-                </form>
+                        <hr>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('devices.index') }}" class="btn btn-secondary mr-2">Batal</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save mr-1"></i> Update Device
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
