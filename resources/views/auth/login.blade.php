@@ -25,7 +25,7 @@
             <label class="small font-weight-bold text-gray-700">Password</label>
             <input type="password" name="password"
                 class="form-control form-control-user @error('password') is-invalid @enderror"
-                placeholder="••••••••••">
+                placeholder="Masukkan Sandi">
             @error('password')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
