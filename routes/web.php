@@ -21,11 +21,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Devices — semua user login bisa lihat & detail
+    // Devices
     Route::get('/devices', [DeviceController::class, 'index'])->name('devices.index');
     Route::get('/devices/{device}', [DeviceController::class, 'show'])->name('devices.show');
 
-    // Access Logs — semua user login bisa lihat
+    // Access Logs
     Route::get('/logs', [AccessLogController::class, 'index'])->name('logs.index');
 
     // Admin only
@@ -41,6 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/devices/{device}/operational-hours', [DeviceController::class, 'storeOperationalHours'])->name('devices.operational-hours.store');
         Route::put('/devices/{device}/operational-hours/{hour}', [DeviceController::class, 'updateOperationalHours'])->name('devices.operational-hours.update');
         Route::delete('/devices/{device}/operational-hours/{hour}', [DeviceController::class, 'destroyOperationalHours'])->name('devices.operational-hours.destroy');
+
+        // Hapus Log
+        Route::delete('/logs/{log}', [AccessLogController::class, 'destroy'])->name('logs.destroy');
+        Route::delete('/logs', [AccessLogController::class, 'destroyAll'])->name('logs.destroyAll');
 
         Route::resource('users', UserController::class)->except(['show']);
     });

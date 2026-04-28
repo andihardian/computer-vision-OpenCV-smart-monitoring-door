@@ -21,4 +21,16 @@ class AccessLog extends Model
     {
         return $this->belongsTo(Device::class);
     }
+
+    // Ambil user berdasarkan identifier
+    public function userIdentifier()
+    {
+        return $this->belongsTo(UserIdentifier::class, 'identifier', 'identifier');
+    }
+
+    public function getUserNameAttribute(): string
+    {
+        $ui = UserIdentifier::where('identifier', $this->identifier)->first();
+        return $ui?->user?->name ?? '—';
+    }
 }

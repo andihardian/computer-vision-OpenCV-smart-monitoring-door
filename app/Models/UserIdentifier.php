@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,5 +22,15 @@ class UserIdentifier extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getTypelabelAttribute(): string
+    {
+        return match($this->type) {
+            'face' => 'Wajah',
+            'rfid' => 'Kartu RFID',
+            'pin'  => 'PIN',
+            default => ucfirst($this->type),
+        };
     }
 }
