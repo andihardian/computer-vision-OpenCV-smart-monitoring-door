@@ -37,6 +37,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/devices/{device}', [DeviceController::class, 'destroy'])->name('devices.destroy');
         Route::post('/devices/{device}/regenerate-token', [DeviceController::class, 'regenerateToken'])->name('devices.regenerate-token');
 
+        // Jam Operasional
+        Route::post('/devices/{device}/operational-hours', [DeviceController::class, 'storeOperationalHours'])->name('devices.operational-hours.store');
+        Route::put('/devices/{device}/operational-hours/{hour}', [DeviceController::class, 'updateOperationalHours'])->name('devices.operational-hours.update');
+        Route::delete('/devices/{device}/operational-hours/{hour}', [DeviceController::class, 'destroyOperationalHours'])->name('devices.operational-hours.destroy');
+
         Route::resource('users', UserController::class)->except(['show']);
     });
 });
