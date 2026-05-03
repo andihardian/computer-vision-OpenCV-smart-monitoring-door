@@ -3,13 +3,25 @@
 use App\Http\Controllers\AccessLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\FaceRegistrationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
+// Landing Page — tampil untuk tamu, redirect ke dashboard jika sudah login
 Route::get('/', function () {
-    return redirect()->route('dashboard');
-});
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return view('welcome');
+})->name('landing');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -28,8 +40,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Access Logs
     Route::get('/logs', [AccessLogController::class, 'index'])->name('logs.index');
 
+    // Face Registration
+    Route::get('/face', [FaceRegistrationController::class, 'index'])->name('face.index');
+    Route::post('/face', [FaceRegistrationController::class, 'store'])->name('face.store');
+    Route::post('/face/cancel', [FaceRegistrationController::class, 'cancel'])->name('face.cancel');
+
     // Admin only
     Route::middleware('role:admin')->group(function () {
+
+        // Devices — CRUD (create harus sebelum {device} agar tidak tertimpa)
         Route::get('/devices/create', [DeviceController::class, 'create'])->name('devices.create');
         Route::post('/devices', [DeviceController::class, 'store'])->name('devices.store');
         Route::get('/devices/{device}/edit', [DeviceController::class, 'edit'])->name('devices.edit');
@@ -46,6 +65,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/logs/{log}', [AccessLogController::class, 'destroy'])->name('logs.destroy');
         Route::delete('/logs', [AccessLogController::class, 'destroyAll'])->name('logs.destroyAll');
 
+        // Settings — Notifikasi
+        Route::post('/settings/notifications', [SettingController::class, 'update'])->name('settings.notifications');
+
+        // Users — CRUD (tanpa show)
         Route::resource('users', UserController::class)->except(['show']);
     });
 });
