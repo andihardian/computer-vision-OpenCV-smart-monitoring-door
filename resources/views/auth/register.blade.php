@@ -1,57 +1,89 @@
 <x-guest-layout>
     <x-slot name="title">Register</x-slot>
 
-    <h1 class="h4 text-gray-900 mb-1 font-weight-bold text-left">Buat Akun Baru</h1>
-    <p class="text-muted small mb-4 text-left">Isi formulir berikut untuk mendaftar</p>
+    <x-slot name="leftPanel">
+        <div class="auth-left-body">
+            <h2>Buat Akun Baru</h2>
+            <p>Daftarkan diri Anda untuk mulai mengelola sistem akses dengan mudah dan aman.</p>
+        </div>
+        <div class="auth-left-footer">
+            <div class="left-step-list">
+                <div class="left-step-item">
+                    <div class="left-step-num">1</div>
+                    <div class="left-step-text">
+                        <strong>Isi Data Diri</strong>
+                        Lengkapi formulir pendaftaran
+                    </div>
+                </div>
+                <div class="left-step-item">
+                    <div class="left-step-num">2</div>
+                    <div class="left-step-text">
+                        <strong>Verifikasi Email</strong>
+                        Konfirmasi melalui email Anda
+                    </div>
+                </div>
+                <div class="left-step-item">
+                    <div class="left-step-num">3</div>
+                    <div class="left-step-text">
+                        <strong>Mulai Gunakan</strong>
+                        Akses semua fitur sistem
+                    </div>
+                </div>
+            </div>
+        </div>
+    </x-slot>
+
+    <h1 class="auth-heading">Buat Akun Baru</h1>
+    <p class="auth-sub">Isi formulir berikut untuk mendaftar</p>
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <div class="form-group">
-            <label class="small font-weight-bold text-gray-700">Nama Lengkap</label>
+        <div class="auth-group">
+            <label class="auth-label">Nama Lengkap</label>
             <input type="text" name="name" value="{{ old('name') }}"
-                class="form-control form-control-user @error('name') is-invalid @enderror"
-                placeholder="Nama lengkap..." autofocus>
+                class="auth-input @error('name') is-invalid @enderror"
+                placeholder="Nama lengkap Anda" autofocus>
             @error('name')
-                <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="form-group">
-            <label class="small font-weight-bold text-gray-700">Alamat Email</label>
+        <div class="auth-group">
+            <label class="auth-label">Alamat Email</label>
             <input type="email" name="email" value="{{ old('email') }}"
-                class="form-control form-control-user @error('email') is-invalid @enderror"
-                placeholder="Masukkan email...">
+                class="auth-input @error('email') is-invalid @enderror"
+                placeholder="nama@email.com">
             @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <label class="small font-weight-bold text-gray-700">Password</label>
+        <div class="auth-row-2">
+            <div class="auth-group">
+                <label class="auth-label">Password</label>
                 <input type="password" name="password"
-                    class="form-control form-control-user @error('password') is-invalid @enderror"
+                    class="auth-input @error('password') is-invalid @enderror"
                     placeholder="••••••••">
                 @error('password')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="col-sm-6">
-                <label class="small font-weight-bold text-gray-700">Konfirmasi Password</label>
+            <div class="auth-group">
+                <label class="auth-label">Konfirmasi Password</label>
                 <input type="password" name="password_confirmation"
-                    class="form-control form-control-user"
+                    class="auth-input"
                     placeholder="••••••••">
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">
-            <i class="fas fa-user-plus mr-2"></i> Daftar
+        <button type="submit" class="auth-btn" style="margin-top:4px">
+            <i class="fas fa-user-plus"></i> Daftar
         </button>
 
-        <hr>
-        <div class="text-center">
-            <a href="{{ route('login') }}" class="small text-primary">Sudah punya akun? Masuk</a>
+        <div class="auth-divider">atau</div>
+        <div class="auth-footer">
+            Sudah punya akun? <a href="{{ route('login') }}" class="auth-link">Masuk sekarang</a>
         </div>
     </form>
 </x-guest-layout>

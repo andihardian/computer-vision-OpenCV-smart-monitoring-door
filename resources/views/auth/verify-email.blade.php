@@ -1,31 +1,58 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+    <x-slot name="leftPanel">
+        <div class="auth-left-body">
+            <h2>Verifikasi Email Anda</h2>
+            <p>Langkah terakhir sebelum Anda dapat menggunakan semua fitur sistem.</p>
+        </div>
+        <div class="auth-left-footer">
+            <div class="left-vstep-list">
+                <div class="left-vstep-item">
+                    <div class="left-vstep-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="left-vstep-text">Akun berhasil dibuat</div>
+                </div>
+                <div class="left-vstep-item">
+                    <div class="left-vstep-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="left-vstep-text">Email verifikasi telah dikirimkan</div>
+                </div>
+                <div class="left-vstep-item">
+                    <div class="left-vstep-icon"><i class="fas fa-check"></i></div>
+                    <div class="left-vstep-text">Klik tautan di email untuk verifikasi</div>
+                </div>
+            </div>
+        </div>
+    </x-slot>
+
+    <div class="verify-circle-wrap">
+        <div class="verify-circle">
+            <i class="fas fa-envelope"></i>
+        </div>
     </div>
 
+    <h1 class="auth-heading" style="text-align:center">Cek Email Anda</h1>
+    <p class="auth-sub" style="text-align:center">
+        Kami telah mengirimkan tautan verifikasi ke alamat email Anda. Klik tautan tersebut untuk mengaktifkan akun.
+    </p>
+
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        <div class="auth-alert-success">
+            <i class="fas fa-check-circle"></i>
+            Tautan verifikasi baru telah dikirim ke email Anda.
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
+    <form method="POST" action="{{ route('verification.send') }}">
+        @csrf
+        <button type="submit" class="auth-btn">
+            <i class="fas fa-redo"></i> Kirim Ulang Email Verifikasi
+        </button>
+    </form>
 
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
-        </form>
+    <div class="auth-divider">atau</div>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                {{ __('Log Out') }}
-            </button>
-        </form>
-    </div>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="auth-btn-outline">
+            <i class="fas fa-sign-out-alt"></i> Keluar dari Akun
+        </button>
+    </form>
 </x-guest-layout>

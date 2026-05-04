@@ -1,54 +1,68 @@
 <x-guest-layout>
     <x-slot name="title">Login</x-slot>
 
-    <h1 class="h4 text-gray-900 mb-1 font-weight-bold text-left">Masuk ke Sistem</h1>
-    <p class="text-muted small mb-4 text-left">Masukkan kredensial Anda untuk melanjutkan</p>
+    <x-slot name="leftPanel">
+        <div class="auth-left-body">
+            <h2>Selamat Datang Kembali</h2>
+            <p>Masuk ke sistem manajemen akses untuk memantau dan mengelola perangkat Anda.</p>
+        </div>
+        <div class="auth-left-footer">
+            <div class="left-feature-list">
+                <div class="left-feature-item"><div class="left-feature-dot"></div>Monitoring akses real-time</div>
+                <div class="left-feature-item"><div class="left-feature-dot"></div>Manajemen perangkat terpusat</div>
+                <div class="left-feature-item"><div class="left-feature-dot"></div>Log & laporan lengkap</div>
+            </div>
+        </div>
+    </x-slot>
+
+    <h1 class="auth-heading">Masuk ke Sistem</h1>
+    <p class="auth-sub">Masukkan kredensial Anda untuk melanjutkan</p>
 
     @if(session('status'))
-        <div class="alert alert-info small">{{ session('status') }}</div>
+        <div class="auth-alert-info">{{ session('status') }}</div>
     @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <div class="form-group">
-            <label class="small font-weight-bold text-gray-700">Alamat Email</label>
+        <div class="auth-group">
+            <label class="auth-label">Alamat Email</label>
             <input type="email" name="email" value="{{ old('email') }}"
-                class="form-control form-control-user @error('email') is-invalid @enderror"
-                placeholder="Masukkan email..." autofocus>
+                class="auth-input @error('email') is-invalid @enderror"
+                placeholder="nama@email.com" autofocus>
             @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="form-group">
-            <label class="small font-weight-bold text-gray-700">Password</label>
+        <div class="auth-group">
+            <label class="auth-label">Password</label>
             <input type="password" name="password"
-                class="form-control form-control-user @error('password') is-invalid @enderror"
-                placeholder="Masukkan Sandi">
+                class="auth-input @error('password') is-invalid @enderror"
+                placeholder="••••••••">
             @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="form-group d-flex justify-content-between align-items-center">
-            <div class="custom-control custom-checkbox small">
-                <input type="checkbox" class="custom-control-input" id="rememberMe" name="remember">
-                <label class="custom-control-label" for="rememberMe">Ingat saya</label>
-            </div>
+        <div class="auth-row-between">
+            <label class="auth-check">
+                <input type="checkbox" name="remember" id="rememberMe">
+                <span>Ingat saya</span>
+            </label>
             @if(Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="small text-primary">Lupa password?</a>
+                <a href="{{ route('password.request') }}" class="auth-link">Lupa password?</a>
             @endif
         </div>
 
-        <button type="submit" class="btn btn-primary btn-user btn-block font-weight-bold">
-            <i class="fas fa-sign-in-alt mr-2"></i> Masuk
+        <button type="submit" class="auth-btn">
+            <i class="fas fa-sign-in-alt"></i> Masuk
         </button>
 
         @if(Route::has('register'))
-            <hr>
-            <div class="text-center">
-                <a href="{{ route('register') }}" class="small text-primary">Belum punya akun? Daftar</a>
+            <div class="auth-divider">atau</div>
+            <div class="auth-footer">
+                Belum punya akun? <a href="{{ route('register') }}" class="auth-link">Daftar sekarang</a>
             </div>
         @endif
     </form>
